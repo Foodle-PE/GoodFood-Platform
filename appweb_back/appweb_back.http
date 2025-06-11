@@ -1,0 +1,6 @@
+@appweb_back_HostAddress = http://localhost:5104
+
+GET {{appweb_back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
