@@ -41,6 +41,15 @@ builder.Services.AddScoped<GetAllProductsQueryService>();
 
 var app = builder.Build();
 
+// Verify if the database exists and create it if it doesn't
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+
+    context.Database.EnsureCreated();
+}
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
