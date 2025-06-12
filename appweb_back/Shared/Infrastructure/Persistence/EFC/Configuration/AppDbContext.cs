@@ -18,8 +18,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
         
-        // Publishing Context
-        //Profiles ContextAdd commentMore actions
+        
+        //Profiles ContextAdd 
         builder.Entity<Profile>().HasKey(p=>p.Id);
         builder.Entity<Profile>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Profile>().OwnsOne(p => p.Name, n =>
