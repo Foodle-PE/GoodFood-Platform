@@ -1,4 +1,16 @@
+using appweb_back.Inventory.Application.Internal.CommandServices;
+using appweb_back.Inventory.Application.Internal.QueryServices;
+using appweb_back.Inventory.Domain.Repositories;
+using appweb_back.Inventory.Infrastructure.Repositories;
+using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -11,12 +23,24 @@ builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Verify Database Connection String
-if (connectionString is null)
-    // Stop the application if the connection string is not set.
-    throw new Exception("Database connection string is not set.");
+try
+{
+    using var connection = new MySqlConnection(connectionString);
+    connection.Open();
+    Console.WriteLine("✅ Conexión exitosa a MySQL.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ Error al conectar a MySQL: {ex.Message}");
+}
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<AddProductToInventoryCommandService>();
+builder.Services.AddScoped<GetAllProductsQueryService>();
 
 
 var app = builder.Build();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
