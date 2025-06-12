@@ -1,4 +1,5 @@
 ﻿using Org.BouncyCastle.Asn1.IsisMtt.X509;
+using appweb_back.Profiles.Domain.Model.Commands;
 using appweb_back.Profiles.Domain.Model.ValueObjects;
 namespace appweb_back.Profiles.Domain.Model.Aggregates;
 
@@ -19,6 +20,14 @@ public partial class Profile
         Email = new EmailAddress(email);
         Phone = new PhoneNumber(phone);
         Role = new UserRole(role);
+    }
+    
+    public Profile(CreateProfileCommand command)
+    {
+        Name= new PersonName(command.FirstName, command.LastName);
+        Email = new EmailAddress(command.Email);
+        Phone = new PhoneNumber(command.Phone);
+        Role = new UserRole(command.Role);
     }
     public int Id { get; }
     public PersonName Name { get; private set; }

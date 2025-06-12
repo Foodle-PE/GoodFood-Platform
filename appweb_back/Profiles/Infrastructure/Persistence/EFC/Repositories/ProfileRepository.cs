@@ -5,7 +5,7 @@ using appweb_back.Shared.Infrastructure.Persistence.EFC.Repositories;
 
 namespace appweb_back.Profiles.Infrastructure.Persistence.EFC.Repositories;
 
-public class ProfileRepository
+public class ProfileRepository(AppDbContext context): BaseRepository<Profile>(context),IProfileRepository
 {
     
 }
