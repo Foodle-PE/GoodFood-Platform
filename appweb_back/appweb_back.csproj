@@ -22,4 +22,13 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.2"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Profiles\Application\ACL\" />
+      <Folder Include="Profiles\Domain\Repositories\" />
+      <Folder Include="Profiles\Domain\Services\" />
+      <Folder Include="Profiles\Infrastructure\Persistence\EFC\Repositories\" />
+      <Folder Include="Profiles\Interfaces\Rest\" />
+      <Folder Include="Shared\Infrastructure\Persistence\EFC\Extensions\" />
+    </ItemGroup>
+
 </Project>
