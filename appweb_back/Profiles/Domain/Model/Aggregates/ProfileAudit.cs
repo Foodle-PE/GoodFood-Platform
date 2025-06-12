@@ -3,8 +3,8 @@ using EntityFrameworkCore.CreatedUpdatedDate.Contracts;
 
 namespace appweb_back.Profiles.Domain.Model.Aggregates;
 
-public partial class Profile : IEntityWithCreatedUpdatedDate
+public partial class Profile :IEntityWithCreatedUpdatedDate
 {
-    [Column("CreatedAt")] public DateTimeOffset? CreatedAt { get; set; }
-    [Column("UpdatedAt")] public DateTimeOffset? UpdatedAt { get; set; }
+    [Column("CreatedAt")] public DateTimeOffset? CreatedDate { get; set; }
+    [Column("UpdatedAt")] public DateTimeOffset? UpdatedDate { get; set; }
 }
