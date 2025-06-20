@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using appweb_back.Profiles.Domain.Model.Aggregates;
+using appweb_back.sensors___alerts.Domain.Model.Entities;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
     
 namespace appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
+    public DbSet<Alert> Alerts { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
@@ -60,9 +62,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             d.WithOwner().HasForeignKey("Id");
             d.Property(d => d.Value).HasColumnName("expiration_date");
         });
+        
+        
        
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();   
-       
     }
 }
