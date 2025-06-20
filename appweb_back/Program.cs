@@ -22,18 +22,6 @@ builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 // Add Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Verify Database Connection String
-try
-{
-    using var connection = new MySqlConnection(connectionString);
-    connection.Open();
-    Console.WriteLine("✅ Conexión exitosa a MySQL.");
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"❌ Error al conectar a MySQL: {ex.Message}");
-}
-
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<AddProductToInventoryCommandService>();
 builder.Services.AddScoped<GetAllProductsQueryService>();
@@ -48,6 +36,18 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<AppDbContext>();
 
     context.Database.EnsureCreated();
+}
+
+// Verify Database Connection String
+try
+{
+    using var connection = new MySqlConnection(connectionString);
+    connection.Open();
+    Console.WriteLine("✅ Conexión exitosa a MySQL.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ Error al conectar a MySQL: {ex.Message}");
 }
 
 

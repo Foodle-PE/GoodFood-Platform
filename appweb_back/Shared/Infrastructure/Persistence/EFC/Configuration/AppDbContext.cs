@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using appweb_back.Inventory.Domain.Model.Aggregates;
+using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using appweb_back.Profiles.Domain.Model.Aggregates;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
@@ -48,6 +49,17 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 n.WithOwner().HasForeignKey("Id");
                 n.Property(p=>p.Role).HasColumnName("RoleType");
             });
+        builder.Entity<Product>().OwnsOne(p => p.Quantity, q =>
+        {
+            q.WithOwner().HasForeignKey("Id");
+            q.Property(q => q.Value).HasColumnName("quantity_value");
+        });
+
+        builder.Entity<Product>().OwnsOne(p => p.ExpirationDate, d =>
+        {
+            d.WithOwner().HasForeignKey("Id");
+            d.Property(d => d.Value).HasColumnName("expiration_date");
+        });
        
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();   
