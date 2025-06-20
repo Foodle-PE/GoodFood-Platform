@@ -2,9 +2,6 @@
 
 namespace appweb_back.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
 
-/// <summary>
-///     Extension methods for <see cref="string" />.
-/// </summary>
 public static partial class StringExtensions
 {
     /// <summary>

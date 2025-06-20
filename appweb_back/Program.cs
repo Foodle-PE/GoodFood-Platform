@@ -1,86 +1,63 @@
-using appweb_back.Profiles.Application.Internal.CommandServices;
-using appweb_back.Profiles.Application.Internal.QueryService;
-using appweb_back.Profiles.Domain.Repositories;
-using appweb_back.Profiles.Domain.Services;
-using appweb_back.Profiles.Infrastructure.Persistence.EFC.Repositories;
-using appweb_back.Shared.Domain.Repositories;
-using appweb_back.Shared.Infrastructure.Interfaces.ASP.Configuration;
+using appweb_back.Inventory.Application.Internal.CommandServices;
+using appweb_back.Inventory.Application.Internal.QueryServices;
+using appweb_back.Inventory.Domain.Repositories;
+using appweb_back.Inventory.Infrastructure.Repositories;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
-using appweb_back.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using MySql.Data.MySqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-// Add Configuration for Routing
+// Add services to the container.
+builder.Services.AddControllers();
 
-builder.Services.AddControllers( options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
-
-// Configure Lowercase URLs
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
 // Add Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Configure Database Context and Logging Levels
-
-builder.Services.AddDbContext<AppDbContext>(options =>
+// Verify Database Connection String
+try
 {
-    if (connectionString == null) return;
-    if (builder.Environment.IsDevelopment()) 
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
-    else if (builder.Environment.IsProduction()) 
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Error)
-            .EnableDetailedErrors();
-}); 
+    using var connection = new MySqlConnection(connectionString);
+    connection.Open();
+    Console.WriteLine("✅ Conexión exitosa a MySQL.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ Error al conectar a MySQL: {ex.Message}");
+}
 
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<AddProductToInventoryCommandService>();
+builder.Services.AddScoped<GetAllProductsQueryService>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    c =>
-    {
-        c.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title   = "Foodle Platform",
-            Version = "v1",
-            Description = "Foddle API",
-        });
-    });
-
-// Configure Dependency Injection
-
-// Shared Bounded Context Injection Configuration
-builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-//Bounded Context Profile Injection Configuration
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
-builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 
 var app = builder.Build();
 
-// Verify Database Objects are Created
+// Verify if the database exists and create it if it doesn't
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
+
     context.Database.EnsureCreated();
 }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Run();
