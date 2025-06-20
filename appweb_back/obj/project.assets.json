@@ -7920,11 +7920,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\appweb_back\\appweb_back\\appweb_back.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\GoodFoodTESTing\\appweb_back\\appweb_back.csproj",
       "projectName": "appweb_back",
-      "projectPath": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\appweb_back\\appweb_back\\appweb_back.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\GoodFoodTESTing\\appweb_back\\appweb_back.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\appweb_back\\appweb_back\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\GoodFoodTESTing\\appweb_back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
