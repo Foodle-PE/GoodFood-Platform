@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "lCGmvprsAViAzsdjA+DbmBzrNHYdZh8Q7k640qmT91Y=",
+  "Source": "appweb_back",
+  "BasePath": "_content/appweb_back",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
