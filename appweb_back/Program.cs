@@ -4,7 +4,7 @@ using appweb_back.Inventory.Domain.Repositories;
 using appweb_back.Inventory.Infrastructure.Repositories;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
