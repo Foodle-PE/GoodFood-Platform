@@ -33,6 +33,10 @@ var builder = WebApplication.CreateBuilder(args);
 // CONFIGURATION SERVICES
 // ============================
 
+// Add Controllers and Routing
+builder.Services.AddControllers(options =>
+    options.Conventions.Add(new KebabCaseRouteNamingConvention()));
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
@@ -40,10 +44,7 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Add Controllers and Routing
-builder.Services.AddControllers(options =>
-    options.Conventions.Add(new KebabCaseRouteNamingConvention()));
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 
 // Add EF Core Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -60,23 +61,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             .LogTo(Console.WriteLine, LogLevel.Error)
             .EnableDetailedErrors();
 });
-
-// JWT Authentication Configuration
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        var secret = builder.Configuration["Jwt:Secret"];
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
-
-// TokenSettings Configuration (Options pattern)
-builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("Jwt"));
 
 // Swagger/OpenAPI Configuration
 builder.Services.AddEndpointsApiExplorer();
@@ -123,12 +107,8 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+    c.EnableAnnotations();
 });
-
-// ============================
-// DEPENDENCY INJECTION
-// ============================
-
 // Shared
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -138,6 +118,9 @@ builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
+// TokenSettings Configuration (Options pattern)
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("Jwt"));
+
 // IAM / Identity
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
@@ -145,10 +128,6 @@ builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
-
-// ============================
-// BUILD APP
-// ============================
 var app = builder.Build();
 
 // Ensure Database Created
@@ -158,7 +137,6 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<AppDbContext>();
     context.Database.EnsureCreated();
 }
-
 // ============================
 // MIDDLEWARE PIPELINE
 // ============================
@@ -170,11 +148,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowedAllPolicy");
 
-app.UseRequestAuthorization(); // Custom middleware si lo creaste
+// Custom middleware si lo creaste
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // ✅ Obligatorio antes de Authorization
+app.UseAuthentication(); 
+app.UseRequestAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();
 app.Run();
+
+
+
+
+
+
