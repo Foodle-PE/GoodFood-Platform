@@ -22,4 +22,19 @@ public class ProfileCommandService(IProfileRepository profileRepository, IUnitOf
             return null;
         }
     }
+    public async Task<Profile?> Handle(UpdateProfileCommand command)
+    {
+        var profile = await profileRepository.FindByUserIdAsync(command.UserId);
+        if (profile == null) return null;
+
+        profile.UpdateName(command.FirstName, command.LastName);
+        profile.UpdateEmail(command.Email);
+        profile  .UpdatePhone(command.Phone);
+            
+
+        await profileRepository.SaveAsync(profile);
+        return profile;
+    }
+    
+    
 }

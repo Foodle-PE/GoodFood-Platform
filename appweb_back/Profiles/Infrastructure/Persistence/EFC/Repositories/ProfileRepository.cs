@@ -12,4 +12,9 @@ public class ProfileRepository(AppDbContext context): BaseRepository<Profile>(co
     {
         return await context.Set<Profile>().FirstOrDefaultAsync(p => p.UserId == userId);
     }
+    public async Task SaveAsync(Profile profile)
+    {
+        context.Update(profile);
+        await context.SaveChangesAsync();
+    }
 }

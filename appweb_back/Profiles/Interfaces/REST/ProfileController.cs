@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using appweb_back.Profiles.Domain.Model.Commands;
 using appweb_back.Profiles.Domain.Model.Queries;
 using appweb_back.Profiles.Domain.Services;
 using appweb_back.Profiles.Interfaces.REST.Resources;
@@ -49,5 +50,24 @@ public class ProfileController(IProfileCommandService profileCommandService,IPro
 
         var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
         return Ok(profileResource);
+    }
+    
+    [HttpPut]
+    public async Task<IActionResult> UpdateProfile([FromQuery] int userId, [FromBody] UpdateProfileResource resource)
+    {
+        var command = new UpdateProfileCommand(
+            userId,
+            resource.FirstName,
+            resource.LastName,
+            resource.Email,
+            resource.Phone
+        );
+
+        var updatedProfile = await profileCommandService.Handle(command);
+
+        if (updatedProfile is null) return NotFound();
+
+        var resourceResult = ProfileResourceFromEntityAssembler.ToResourceFromEntity(updatedProfile);
+        return Ok(resourceResult);
     }
 }

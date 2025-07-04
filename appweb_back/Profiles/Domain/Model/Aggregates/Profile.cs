@@ -47,4 +47,20 @@ public partial class Profile
     public string RoleType => Role.Role;
     
     public string PhoneNumber => Phone.Number;
+    
+    public void UpdateName(string firstName, string lastName)
+    {
+        Name = new PersonName(firstName, lastName);
+    }
+
+    public void UpdateEmail(string email)
+    {
+        Email = new EmailAddress(email);
+    }
+
+    public void UpdatePhone(string phone)
+    {
+        Phone = new PhoneNumber(phone);
+    }
+    
 }
