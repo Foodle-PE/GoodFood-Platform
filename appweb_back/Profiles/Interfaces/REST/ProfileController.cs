@@ -40,4 +40,14 @@ public class ProfileController(IProfileCommandService profileCommandService,IPro
         var profileResources = profiles.Select(ProfileResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(profileResources);
     }
+    
+    [HttpGet("by-user/{userId:int}")]
+    public async Task<IActionResult> GetProfileByUserId(int userId)
+    {
+        var profile = await profileQueryService.Handle(new GetProfileByUserIdQuery(userId));
+        if (profile is null) return NotFound();
+
+        var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
+        return Ok(profileResource);
+    }
 }

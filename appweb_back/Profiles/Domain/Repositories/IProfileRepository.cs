@@ -5,5 +5,5 @@ namespace appweb_back.Profiles.Domain.Repositories;
 
 public interface IProfileRepository : IBaseRepository<Profile>
 {
-    
+    Task<Profile?> FindByUserIdAsync(int userId);
 }

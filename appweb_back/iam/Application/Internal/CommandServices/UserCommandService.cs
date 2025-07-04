@@ -31,7 +31,13 @@ public class UserCommandService(IUserRepository userRepository, ITokenService to
         if (user is null || !hashingService.VerifyPassword(command.Password, user.PasswordHash))
             throw new Exception("Invalid username or password.");
         var token = tokenService.GenerateToken(user);
+        if (user == null)
+            Console.WriteLine("[DEBUG] Usuario no encontrado");
+        else if (!hashingService.VerifyPassword(command.Password, user.PasswordHash))
+            Console.WriteLine($"[DEBUG] Contraseña inválida para usuario: {user.Username}");
         return (user, token);
+        
+        
     }
     
     
