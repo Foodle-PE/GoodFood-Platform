@@ -8,11 +8,14 @@
 
     <ItemGroup>
         <!-- Audit Trails related related packages -->
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="EntityFrameworkCore.CreatedUpdatedDate" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
         <!-- Entity Framework Core related packages -->
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.5"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.6"/>
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.12.1" />
         <!-- MySQL Entity Framework Core related packages -->
         <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.3"/>
         <!-- Naming convention conversion related packages -->
@@ -20,10 +23,11 @@
         <!-- Swagger related packages -->
         <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.2"/>
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.2"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Profiles\Application\ACL\" />
+      <Folder Include="iam\" />
     </ItemGroup>
 
 </Project>

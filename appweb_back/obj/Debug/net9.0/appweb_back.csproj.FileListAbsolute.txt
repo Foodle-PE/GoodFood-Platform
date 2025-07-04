@@ -228,3 +228,12 @@ C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\obj\Debug\net9.0\refi
 C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\obj\Debug\net9.0\appweb_back.pdb
 C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\obj\Debug\net9.0\appweb_back.genruntimeconfig.cache
 C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\obj\Debug\net9.0\ref\appweb_back.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

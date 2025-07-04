@@ -1,70 +1,157 @@
+using System.Text;
+using appweb_back.iam.Application.Internal.CommandServices;
+using appweb_back.iam.Application.Internal.OutboundServices;
+using appweb_back.iam.Application.Internal.QueryServices;
+using appweb_back.iam.Domain.Repositories;
+using appweb_back.iam.Domain.Services;
+using appweb_back.iam.Infrastructure.Hashing.BCrypt.Services;
+using appweb_back.iam.Infrastructure.Persistence.EFC.Repositories;
+using appweb_back.iam.Infrastructure.Pipeline.Middleware.Extensions;
+using appweb_back.iam.Infrastructure.Tokens.JWT.Configuration;
+using appweb_back.iam.Infrastructure.Tokens.Services;
+using appweb_back.iam.Interfaces.ACL;
+using appweb_back.iam.Interfaces.ACL.Services;
 using appweb_back.Profiles.Application.Internal.CommandServices;
 using appweb_back.Profiles.Application.Internal.QueryService;
 using appweb_back.Profiles.Domain.Repositories;
 using appweb_back.Profiles.Domain.Services;
 using appweb_back.Profiles.Infrastructure.Persistence.EFC.Repositories;
+using appweb_back.Profiles.Interfaces.ACL;
+using appweb_back.Profiles.Interfaces.ACL.Services;
 using appweb_back.Shared.Domain.Repositories;
 using appweb_back.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ============================
+// CONFIGURATION SERVICES
+// ============================
 
-// Add Configuration for Routing
+// Add CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowedAllPolicy", policy =>
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 
-builder.Services.AddControllers( options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
-
-// Configure Lowercase URLs
+// Add Controllers and Routing
+builder.Services.AddControllers(options =>
+    options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-// Add Database Connection
+// Add EF Core Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Configure Database Context and Logging Levels
-
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     if (connectionString == null) return;
-    if (builder.Environment.IsDevelopment()) 
+    if (builder.Environment.IsDevelopment())
         options.UseMySQL(connectionString)
             .LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
-    else if (builder.Environment.IsProduction()) 
+    else if (builder.Environment.IsProduction())
         options.UseMySQL(connectionString)
             .LogTo(Console.WriteLine, LogLevel.Error)
             .EnableDetailedErrors();
-}); 
+});
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    c =>
+// JWT Authentication Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
+        var secret = builder.Configuration["Jwt:Secret"];
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            Title   = "Foodle Platform",
-            Version = "v1",
-            Description = "Foddle API",
-        });
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
     });
 
-// Configure Dependency Injection
+// TokenSettings Configuration (Options pattern)
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("Jwt"));
 
-// Shared Bounded Context Injection Configuration
-builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-//Bounded Context Profile Injection Configuration
+// Swagger/OpenAPI Configuration
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "GoodFood API",
+        Version = "v1",
+        Description = "GoodFood Platform API",
+        TermsOfService = new Uri("https://good-food.com/tos"),
+        Contact = new OpenApiContact
+        {
+            Name = "Foodle Studios",
+            Email = "contact@acme.com"
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Apache 2.0",
+            Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
+        }
+    });
+    c.EnableAnnotations();
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+// ============================
+// DEPENDENCY INJECTION
+// ============================
+
+// Shared
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Profiles
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
-builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
+builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
+builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
+builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
+// IAM / Identity
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
+// ============================
+// BUILD APP
+// ============================
 var app = builder.Build();
 
-// Verify Database Objects are Created
+// Ensure Database Created
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -72,15 +159,21 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated();
 }
 
-// Configure the HTTP request pipeline.
+// ============================
+// MIDDLEWARE PIPELINE
+// ============================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowedAllPolicy");
+
+app.UseRequestAuthorization(); // Custom middleware si lo creaste
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // ✅ Obligatorio antes de Authorization
 app.UseAuthorization();
 
 app.MapControllers();
