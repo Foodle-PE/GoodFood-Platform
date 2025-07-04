@@ -52,4 +52,5 @@ public class AuthenticationController(IIamContextFacade iamContextFacade,  IUser
         return Ok(authenticatedUserResource);
     }
     
+    
 }
