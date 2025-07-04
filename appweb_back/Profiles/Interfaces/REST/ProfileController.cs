@@ -13,13 +13,13 @@ namespace appweb_back.Profiles.Interfaces.REST;
 public class ProfileController(IProfileCommandService profileCommandService,IProfileQueryService profileQueryService): ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateProfile(CreateProfileResource resource)
+    public async Task<IActionResult> CreateProfile([FromBody] CreateProfileResource resource, [FromQuery] int userId)
     {
-        var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource, userId);
         var profile = await profileCommandService.Handle(createProfileCommand);
         if (profile is null) return BadRequest();
         var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
-        return CreatedAtAction(nameof(GetProfileById), new {profileId = profileResource.Id}, profileResource);
+        return CreatedAtAction(nameof(GetProfileById), new { profileId = profileResource.Id }, profileResource);
     }
     
     [HttpGet("{profileId:int}")]
