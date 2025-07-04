@@ -14,8 +14,9 @@ public partial class Profile
         
     }
 
-    public Profile(string firstName, string lastName, string email, string phone, string role)
+    public Profile(int userId, string firstName, string lastName, string email, string phone, string role)
     {
+        UserId = userId;
         Name = new PersonName(firstName, lastName);
         Email = new EmailAddress(email);
         Phone = new PhoneNumber(phone);
@@ -24,12 +25,15 @@ public partial class Profile
     
     public Profile(CreateProfileCommand command)
     {
+        UserId = command.UserId;
         Name= new PersonName(command.FirstName, command.LastName);
         Email = new EmailAddress(command.Email);
         Phone = new PhoneNumber(command.Phone);
         Role = new UserRole(command.Role);
     }
     public int Id { get; }
+    
+    public int UserId { get; private set; } // ✅ Enlace lógico con User
     public PersonName Name { get; private set; }
     public EmailAddress Email { get;private set; }
     public UserRole Role { get;private set; }
