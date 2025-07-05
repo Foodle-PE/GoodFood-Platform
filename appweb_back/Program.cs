@@ -4,14 +4,15 @@ using appweb_back.Inventory.Domain.Repositories;
 using appweb_back.Inventory.Infrastructure.Repositories;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Microsoft.EntityFrameworkCore;
-using MySqlConnector;
+using MySql.Data.MySqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
-
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        mySqlOptions => {
+        }));
 // Add services to the container.
 builder.Services.AddControllers();
 
