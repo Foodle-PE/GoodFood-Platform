@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\1luis\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj": {}
+    "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj": {}
   },
   "projects": {
-    "C:\\Users\\1luis\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj": {
+    "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\1luis\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
+        "projectUniqueName": "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
         "projectName": "appweb_back",
-        "projectPath": "C:\\Users\\1luis\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
-        "packagesPath": "C:\\Users\\1luis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\1luis\\RiderProjects\\GoodFood-Platform\\appweb_back\\obj\\",
+        "projectPath": "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
+        "packagesPath": "C:\\Users\\maria\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\1luis\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\maria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,6 +46,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "EntityFrameworkCore.CreatedUpdatedDate": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -51,6 +57,10 @@
             "Humanizer": {
               "target": "Package",
               "version": "[2.14.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.6, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -64,9 +74,17 @@
               "target": "Package",
               "version": "[1.1.6, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.12.1, )"
+            },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.3, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[9.0.0-preview.3.efcore.9.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -75,6 +93,10 @@
             "Swashbuckle.AspNetCore.Annotations": {
               "target": "Package",
               "version": "[8.1.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.12.1, )"
             }
           },
           "imports": [
@@ -96,7 +118,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\1luis\\.dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\maria\\.dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -58,8 +58,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<User>().Property(u => u.Username).IsRequired();
         builder.Entity<User>().Property(u => u.Role).IsRequired();
         
-        modelBuilder.Entity<Product>().OwnsOne(p => p.Quantity);
-        modelBuilder.Entity<Product>().OwnsOne(p => p.ExpirationDate);
+        builder.Entity<Product>().OwnsOne(p => p.Quantity);
+        builder.Entity<Product>().OwnsOne(p => p.ExpirationDate);
 
         // Snake_case + pluralized table names
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
