@@ -27,6 +27,14 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+using appweb_back.Inventory.Application.Internal.CommandServices;
+using appweb_back.Inventory.Application.Internal.QueryServices;
+using appweb_back.Inventory.Domain.Repositories;
+using appweb_back.Inventory.Infrastructure.Repositories;
+using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================
@@ -117,6 +125,11 @@ builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
+
+//Inventory
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<AddProductToInventoryCommandService>();
+builder.Services.AddScoped<GetAllProductsQueryService>();
 
 // TokenSettings Configuration (Options pattern)
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("Jwt"));

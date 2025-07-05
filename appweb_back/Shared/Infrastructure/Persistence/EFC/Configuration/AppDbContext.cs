@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using appweb_back.Inventory.Domain.Model.Aggregates;
+using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using appweb_back.Profiles.Domain.Model.Aggregates;
 using appweb_back.iam.Domain.Model.Aggregates; 
@@ -8,7 +9,8 @@ namespace appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; } // ✅ AÑADIDO
+    public DbSet<User> Users { get; set; } 
+    public DbSet<Product> Products { get; set; }// ✅ AÑADIDO
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
@@ -55,6 +57,9 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
         builder.Entity<User>().Property(u => u.Username).IsRequired();
         builder.Entity<User>().Property(u => u.Role).IsRequired();
+        
+        modelBuilder.Entity<Product>().OwnsOne(p => p.Quantity);
+        modelBuilder.Entity<Product>().OwnsOne(p => p.ExpirationDate);
 
         // Snake_case + pluralized table names
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
