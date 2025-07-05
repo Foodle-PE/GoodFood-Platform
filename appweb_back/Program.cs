@@ -13,6 +13,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         mySqlOptions => {
         }));
+
+//    Add CORS policy 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllPolicy",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -56,6 +65,9 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+// Apply CORS Policy  
+app.UseCors("AllowAllPolicy");
 
 app.UseAuthorization();
 
