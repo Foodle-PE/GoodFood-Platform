@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using appweb_back.Profiles.Domain.Model.Commands;
 using appweb_back.Profiles.Domain.Model.Queries;
 using appweb_back.Profiles.Domain.Services;
 using appweb_back.Profiles.Interfaces.REST.Resources;
@@ -13,13 +14,13 @@ namespace appweb_back.Profiles.Interfaces.REST;
 public class ProfileController(IProfileCommandService profileCommandService,IProfileQueryService profileQueryService): ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateProfile(CreateProfileResource resource)
+    public async Task<IActionResult> CreateProfile([FromBody] CreateProfileResource resource, [FromQuery] int userId)
     {
-        var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource, userId);
         var profile = await profileCommandService.Handle(createProfileCommand);
         if (profile is null) return BadRequest();
         var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
-        return CreatedAtAction(nameof(GetProfileById), new {profileId = profileResource.Id}, profileResource);
+        return CreatedAtAction(nameof(GetProfileById), new { profileId = profileResource.Id }, profileResource);
     }
     
     [HttpGet("{profileId:int}")]
@@ -39,5 +40,34 @@ public class ProfileController(IProfileCommandService profileCommandService,IPro
         var profiles = await profileQueryService.Handle(getAllProfilesQuery);
         var profileResources = profiles.Select(ProfileResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(profileResources);
+    }
+    
+    [HttpGet("by-user/{userId:int}")]
+    public async Task<IActionResult> GetProfileByUserId(int userId)
+    {
+        var profile = await profileQueryService.Handle(new GetProfileByUserIdQuery(userId));
+        if (profile is null) return NotFound();
+
+        var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
+        return Ok(profileResource);
+    }
+    
+    [HttpPut]
+    public async Task<IActionResult> UpdateProfile([FromQuery] int userId, [FromBody] UpdateProfileResource resource)
+    {
+        var command = new UpdateProfileCommand(
+            userId,
+            resource.FirstName,
+            resource.LastName,
+            resource.Email,
+            resource.Phone
+        );
+
+        var updatedProfile = await profileCommandService.Handle(command);
+
+        if (updatedProfile is null) return NotFound();
+
+        var resourceResult = ProfileResourceFromEntityAssembler.ToResourceFromEntity(updatedProfile);
+        return Ok(resourceResult);
     }
 }
