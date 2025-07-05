@@ -12,6 +12,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
+//    Add CORS policy 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllPolicy",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 
