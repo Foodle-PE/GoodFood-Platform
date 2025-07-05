@@ -30,4 +30,18 @@
       <Folder Include="iam\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="sensors-&amp;-alerts\Application\Internal\QueryServices\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Model\Aggregates\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Model\Commands\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Model\Entities\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Model\Queries\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Model\ValueObjects\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Repositories\" />
+      <Folder Include="sensors-&amp;-alerts\Domain\Services\" />
+      <Folder Include="sensors-&amp;-alerts\Infrastructure\Data\" />
+      <Folder Include="sensors-&amp;-alerts\Infrastructure\Repositories\" />
+      <Folder Include="sensors-&amp;-alerts\Interfaces\Controllers\" />
+    </ItemGroup>
+
 </Project>
