@@ -11,6 +11,10 @@ using appweb_back.iam.Infrastructure.Tokens.JWT.Configuration;
 using appweb_back.iam.Infrastructure.Tokens.Services;
 using appweb_back.iam.Interfaces.ACL;
 using appweb_back.iam.Interfaces.ACL.Services;
+using appweb_back.Inventory.Application.Internal.CommandServices;
+using appweb_back.Inventory.Application.Internal.QueryServices;
+using appweb_back.Inventory.Domain.Repositories;
+using appweb_back.Inventory.Infrastructure.Repositories;
 using appweb_back.Profiles.Application.Internal.CommandServices;
 using appweb_back.Profiles.Application.Internal.QueryService;
 using appweb_back.Profiles.Domain.Repositories;
@@ -18,6 +22,10 @@ using appweb_back.Profiles.Domain.Services;
 using appweb_back.Profiles.Infrastructure.Persistence.EFC.Repositories;
 using appweb_back.Profiles.Interfaces.ACL;
 using appweb_back.Profiles.Interfaces.ACL.Services;
+using appweb_back.sensors___alerts.Application.Internal.CommandServices;
+using appweb_back.sensors___alerts.Application.Internal.QueryServices;
+using appweb_back.sensors___alerts.Domain.Repositories;
+using appweb_back.sensors___alerts.Infrastructure.Repositories;
 using appweb_back.Shared.Domain.Repositories;
 using appweb_back.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -128,6 +136,40 @@ builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
+// Inventory
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<AddProductToInventoryCommandService>();
+builder.Services.AddScoped<GetAllProductsQueryService>();
+
+// Alerts
+builder.Services.AddScoped<IAlertRepository, AlertRepository>();
+builder.Services.AddScoped<GetAlertsService>();
+builder.Services.AddScoped<CreateAlertService>();
+
+// Configuración de autenticación JWT
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<TokenSettings>();
+var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false; // true en producción
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false, // Puedes activarlo si defines un issuer
+            ValidateAudience = false, // Puedes activarlo si defines un audience
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
 var app = builder.Build();
 
 // Ensure Database Created
@@ -146,12 +188,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseCors("AllowedAllPolicy");
 
-// Custom middleware si lo creaste
 app.UseHttpsRedirection();
 
 app.UseAuthentication(); 
+
 app.UseRequestAuthorization();
 app.UseAuthorization();
 

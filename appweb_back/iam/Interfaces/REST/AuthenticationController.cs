@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Text.Json;
 using appweb_back.iam.Domain.Services;
 using appweb_back.iam.Infrastructure.Pipeline.Middleware.Attributes;
 using appweb_back.iam.Interfaces.ACL;
@@ -18,6 +19,7 @@ public class AuthenticationController(IIamContextFacade iamContextFacade,  IUser
     [AllowAnonymous]
     public async Task<IActionResult> SignUp([FromBody] SignUpResource resource)
     {
+        Console.WriteLine($"Received: {JsonSerializer.Serialize(resource)}");
         if (resource == null) return BadRequest("Sign-up resource cannot be null.");
 
         var userId = await iamContextFacade.CreateUser(

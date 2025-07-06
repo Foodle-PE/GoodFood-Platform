@@ -1,21 +1,28 @@
-﻿using appweb_back.Inventory.Domain.Model.Entities;
+﻿using appweb_back.Inventory.Domain.Model.Aggregates;
 using appweb_back.Inventory.Domain.Repositories;
+using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration; // Asegúrate que este namespace sea correcto y contenga AppDbContext
+using Microsoft.EntityFrameworkCore;
 
-namespace appweb_back.Inventory.Infrastructure.Repositories;
-
-public class ProductRepository : IProductRepository
+namespace appweb_back.Inventory.Infrastructure.Repositories
 {
-    private readonly List<Product> _products = new();
-
-    public Task AddAsync(Product product)
+    public class ProductRepository : IProductRepository
     {
-        _products.Add(product);
-        return Task.CompletedTask;
-    }
+        private readonly AppDbContext _context;
 
-    public Task<IEnumerable<Product>> ListAsync()
-    {
-        return Task.FromResult<IEnumerable<Product>>(_products);
+        public ProductRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddAsync(Product product)
+        {
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync(); // Guarda en la BD
+        }
+
+        public async Task<IEnumerable<Product>> ListAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
     }
 }
-

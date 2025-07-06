@@ -30,7 +30,13 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
         }
         Console.WriteLine("Entering Authorization");
         var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-        if (token == null) throw new Exception("Null or invalid token");
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Console.WriteLine("No token found. Aborting.");
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsync("Unauthorized: Token missing or invalid.");
+            return;
+        }
         var userId = await tokenService.ValidateToken(token);
         if (userId == null) throw new Exception("Invalid token");
         var getUserByIdQuery = new GetUserByIdQuery(userId.Value);

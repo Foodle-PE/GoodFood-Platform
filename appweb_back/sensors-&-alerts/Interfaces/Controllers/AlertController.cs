@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace appweb_back.sensors___alerts.Interfaces.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/Alerta")]
 public class AlertaController : ControllerBase
 {
     private readonly CreateAlertService _createService;

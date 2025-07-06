@@ -4,7 +4,7 @@ namespace appweb_back.Inventory.Domain.Model.Aggregates;
 
 public class Product
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
     public string Name { get; private set; }
     public Quantity Quantity { get; private set; }
     public ExpirationDate ExpirationDate { get; private set; }

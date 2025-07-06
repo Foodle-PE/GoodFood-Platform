@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace appweb_back.Inventory.Interfaces.REST.Controllers;
 
 [ApiController]
-[Route("api/inventory")]
+[Route("api/v1/inventory")]
 public class InventoryController : ControllerBase
 {
     private readonly AddProductToInventoryCommandService _commandService;
@@ -31,7 +31,7 @@ public class InventoryController : ControllerBase
         return Ok();
     }
 
-    // GET: api/inventory
+    // GET: api/v1/inventory
     [HttpGet]
     public async Task<IActionResult> Get()
     {

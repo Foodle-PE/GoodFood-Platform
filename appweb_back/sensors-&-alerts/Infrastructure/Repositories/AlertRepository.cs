@@ -1,6 +1,6 @@
 ﻿using appweb_back.sensors___alerts.Domain.Model.Entities;
 using appweb_back.sensors___alerts.Domain.Repositories;
-using appweb_back.sensors___alerts.Infrastructure.Data;
+using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace appweb_back.sensors___alerts.Infrastructure.Repositories;
@@ -21,7 +21,7 @@ public class AlertRepository : IAlertRepository
 
     public async Task AddAsync(Alert alert)
     {
-        _context.Alerts.Add(alert);
+        await _context.Alerts.AddAsync(alert);
         await _context.SaveChangesAsync();
     }
 }
