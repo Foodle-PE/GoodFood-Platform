@@ -29,6 +29,7 @@
 
     <ItemGroup>
         <Folder Include="iam\" />
+        <Folder Include="Inventory\Domain\Model\Entities\" />
     </ItemGroup>
 
 </Project>

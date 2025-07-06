@@ -1,4 +1,4 @@
-﻿using appweb_back.Inventory.Domain.Model.Entities;
+﻿using appweb_back.Inventory.Domain.Model.Aggregates;
 using appweb_back.Inventory.Domain.Repositories;
 
 namespace appweb_back.Inventory.Infrastructure.Repositories;

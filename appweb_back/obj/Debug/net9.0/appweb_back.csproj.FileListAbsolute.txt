@@ -237,3 +237,5 @@ C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Micr
 C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\MySqlConnector.dll
+C:\Users\maria\RiderProjects\GoodFood-Platform\appweb_back\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll

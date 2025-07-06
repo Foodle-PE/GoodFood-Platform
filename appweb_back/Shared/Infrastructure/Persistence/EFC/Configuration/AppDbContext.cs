@@ -2,7 +2,8 @@ using appweb_back.Inventory.Domain.Model.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using appweb_back.Profiles.Domain.Model.Aggregates;
-using appweb_back.iam.Domain.Model.Aggregates; 
+using appweb_back.iam.Domain.Model.Aggregates;
+using appweb_back.sensors___alerts.Domain.Model.Entities;
 using appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
 namespace appweb_back.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -11,6 +12,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; } 
     public DbSet<Product> Products { get; set; }// ✅ AÑADIDO
+    public DbSet<Alert> Alerts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
@@ -58,8 +60,26 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<User>().Property(u => u.Username).IsRequired();
         builder.Entity<User>().Property(u => u.Role).IsRequired();
         
-        builder.Entity<Product>().OwnsOne(p => p.Quantity);
-        builder.Entity<Product>().OwnsOne(p => p.ExpirationDate);
+    // === PRODUCTS ===
+    builder.Entity<Product>(product =>
+    {
+        product.HasKey(p => p.Id);
+        product.Property(p => p.Name).IsRequired();
+
+        product.OwnsOne(p => p.Quantity, q =>
+        {
+            q.WithOwner().HasForeignKey("Id"); // ✅ clave alineada con Product.Id
+            q.Property(p => p.Value).HasColumnName("Quantity_Value");
+        });
+
+        product.OwnsOne(p => p.ExpirationDate, ed =>
+        {
+            ed.WithOwner().HasForeignKey("Id"); // ✅ clave alineada con Product.Id
+            ed.Property(p => p.Value).HasColumnName("ExpirationDate_Value");
+        });
+    });
+
+        
 
         // Snake_case + pluralized table names
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
