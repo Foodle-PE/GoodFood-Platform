@@ -16,4 +16,9 @@ public class GetAlertsService
     {
         return _repository.GetAllAsync();
     }
+    
+    public Task<Alert?> FindByIdAsync(int id) // ✅ usa el método real del repo
+    {
+        return _repository.GetByIdAsync(id);
+    }
 }

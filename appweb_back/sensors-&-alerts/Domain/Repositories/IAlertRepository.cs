@@ -6,4 +6,7 @@ public interface IAlertRepository
 {
     Task<List<Alert>> GetAllAsync();
     Task AddAsync(Alert alert);
+    Task UpdateAsync(Alert alert);
+    
+    Task<Alert?> GetByIdAsync(int id);
 }

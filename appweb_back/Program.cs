@@ -146,6 +146,7 @@ builder.Services.AddScoped<GetAllProductsQueryService>();
 builder.Services.AddScoped<IAlertRepository, AlertRepository>();
 builder.Services.AddScoped<GetAlertsService>();
 builder.Services.AddScoped<CreateAlertService>();
+builder.Services.AddScoped<UpdateAlertService>();
 
 // Configuración de autenticación JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<TokenSettings>();

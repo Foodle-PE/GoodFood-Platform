@@ -24,4 +24,15 @@ public class AlertRepository : IAlertRepository
         await _context.Alerts.AddAsync(alert);
         await _context.SaveChangesAsync();
     }
+    public async Task UpdateAsync(Alert alert)
+    {
+        _context.Alerts.Update(alert);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task<Alert?> GetByIdAsync(int id)
+    {
+        return await _context.Alerts.FirstOrDefaultAsync(a => a.Id == id);
+    }
+
 }

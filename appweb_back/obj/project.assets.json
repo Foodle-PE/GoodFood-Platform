@@ -8276,19 +8276,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {}
+    "C:\\Users\\maria\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\prpr\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
+      "projectUniqueName": "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
       "projectName": "appweb_back",
-      "projectPath": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\prpr\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\UPC\\6toCiclo\\Apps Web\\prpr\\GoodFood-Platform\\appweb_back\\obj\\",
+      "projectPath": "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\appweb_back.csproj",
+      "packagesPath": "C:\\Users\\maria\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\maria\\RiderProjects\\GoodFood-Platform\\appweb_back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\maria\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8314,7 +8314,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net9.0": {
@@ -8388,7 +8388,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\User\\.dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\maria\\.dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -11,5 +11,5 @@ public class Alert
     public string Message { get; set; } = string.Empty;
     public string Severity { get; set; } = string.Empty;
     public DateTime Date { get; set; }
-    
+    public bool IsClosed { get; set; } = false; // 👈 NUEVO
 }

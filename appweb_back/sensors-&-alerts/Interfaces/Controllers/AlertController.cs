@@ -11,11 +11,13 @@ public class AlertaController : ControllerBase
 {
     private readonly CreateAlertService _createService;
     private readonly GetAlertsService _getService;
+    private readonly UpdateAlertService _updateService;
 
-    public AlertaController(CreateAlertService createService, GetAlertsService getService)
+    public AlertaController(CreateAlertService createService, GetAlertsService getService, UpdateAlertService updateService)
     {
         _createService = createService;
         _getService = getService;
+        _updateService = updateService;
     }
 
     [HttpGet]
@@ -30,5 +32,17 @@ public class AlertaController : ControllerBase
     {
         await _createService.EjecutarAsync(alert);
         return CreatedAtAction(nameof(Get), new { alert.Id }, alert);
+    }
+    
+    [HttpPut("{id}/close")]
+    public async Task<IActionResult> CloseAlert(int id)
+    {
+        var alert = await _getService.FindByIdAsync(id);
+        if (alert == null) return NotFound();
+
+        alert.IsClosed = true;
+        await _updateService.UpdateAsync(alert);
+
+        return NoContent();
     }
 }
