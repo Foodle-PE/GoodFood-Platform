@@ -20,22 +20,32 @@ public class AuthenticationController(IIamContextFacade iamContextFacade,  IUser
     public async Task<IActionResult> SignUp([FromBody] SignUpResource resource)
     {
         Console.WriteLine($"Received: {JsonSerializer.Serialize(resource)}");
-        if (resource == null) return BadRequest("Sign-up resource cannot be null.");
 
-        var userId = await iamContextFacade.CreateUser(
-            resource.Username,
-            resource.Password,
-            resource.FirstName,
-            resource.LastName,
-            resource.Email,
-            resource.Phone,
-            resource.Role
-        );
+        if (resource == null)
+            return BadRequest("Sign-up resource cannot be null.");
 
-        if (userId == 0)
-            return StatusCode(500, "An error occurred while creating the user and profile.");
+        try
+        {
+            var userId = await iamContextFacade.CreateUser(
+                resource.Username,
+                resource.Password,
+                resource.FirstName,
+                resource.LastName,
+                resource.Email,
+                resource.Phone,
+                resource.Role
+            );
 
-        return Ok(new { message = "User and profile created successfully", userId });
+            if (userId == 0)
+                return StatusCode(500, "User creation failed (returned 0).");
+
+            return Ok(new { message = "User and profile created successfully", userId });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"ERROR EN SIGN-UP: {ex.Message}");
+            return StatusCode(500, $"Error interno: {ex.Message}");
+        }
     }
     [HttpPost("sign-in")]
     [AllowAnonymous]
