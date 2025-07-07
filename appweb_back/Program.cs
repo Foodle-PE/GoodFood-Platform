@@ -198,12 +198,11 @@ app.UseCors("AllowedFrontendOnly");
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
-
-app.UseRequestAuthorization();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();
 
 
