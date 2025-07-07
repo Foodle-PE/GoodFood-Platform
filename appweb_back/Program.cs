@@ -48,8 +48,11 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowedAllPolicy", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowedFrontendOnly", policy =>
+        policy.WithOrigins("https://goodfood-pe.netlify.app")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
 
 
@@ -191,7 +194,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors("AllowedAllPolicy");
+app.UseCors("AllowedFrontendOnly");
 
 app.UseHttpsRedirection();
 
