@@ -186,10 +186,9 @@ using (var scope = app.Services.CreateScope())
 // ============================
 // MIDDLEWARE PIPELINE
 // ============================
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 }
 
 app.UseRouting();
