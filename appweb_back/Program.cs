@@ -48,7 +48,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowedFrontendOnly", policy =>
+    options.AddPolicy("AllowAll", policy =>
         policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod()
@@ -194,7 +194,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors("AllowedAll");
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
