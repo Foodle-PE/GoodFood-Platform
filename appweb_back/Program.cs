@@ -49,7 +49,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowedFrontendOnly", policy =>
-        policy.WithOrigins("https://goodfood-pe.netlify.app")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials());
@@ -194,7 +194,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors("AllowedFrontendOnly");
+app.UseCors("AllowedAll");
 
 app.UseHttpsRedirection();
 
