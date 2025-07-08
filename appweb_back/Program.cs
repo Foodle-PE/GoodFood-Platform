@@ -49,7 +49,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowedFrontendOnly", policy =>
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("https://cool-sundae-9c4e3d.netlify.app")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials());
