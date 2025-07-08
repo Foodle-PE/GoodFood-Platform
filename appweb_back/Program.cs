@@ -48,11 +48,11 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials());
+    options.AddPolicy("AllowedFrontendOnly", policy =>
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials());
 });
 
 
@@ -194,7 +194,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowAllAllowedFrontendOnly");
 
 app.UseHttpsRedirection();
 
