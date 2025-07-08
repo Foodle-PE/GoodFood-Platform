@@ -11,7 +11,7 @@ namespace appweb_back.iam.Interfaces.REST;
 
 [Authorize]
 [ApiController]
-[Route("api/v1/authentication")]
+[Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 public class AuthenticationController(IIamContextFacade iamContextFacade,  IUserCommandService userCommandService) : ControllerBase
 {
