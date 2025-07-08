@@ -194,7 +194,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors("AllowAllAllowedFrontendOnly");
+app.UseCors("AllowedFrontendOnly");
 
 app.UseHttpsRedirection();
 
